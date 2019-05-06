@@ -1,5 +1,7 @@
 # dynamic-hyperledger-fabric-kafka-kubernetes-multihost-usecase-implementation
 
+[practical implementation video link](https://youtu.be/ngGU33v4E9Y)
+
 ## This repository contains scripts to spawn the dynamic hyperledger fabric network in multi host environment on local as well as cloud (AWS. AZURE etc.). Explain  with the help of an usecase **BANKCONSORTIUMBCNET**. 
 
 **In This Blockchain Network UseCase :-** 
