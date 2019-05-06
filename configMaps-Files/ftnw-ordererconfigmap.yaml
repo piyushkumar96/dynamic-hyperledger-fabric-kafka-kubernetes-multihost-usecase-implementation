@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: ordererconfigmap
+ namespace: bankconsortiumbcnet
+data:
+  ORDERER_GENERAL_LEDGERTYPE: "file"
+  ORDERER_FILELEDGER_LOCATION: "/var/hyperledger/production/orderer/"
+  ORDERER_GENERAL_BATCHTIMEOUT: "2s"
+  ORDERER_GENERAL_BATCHSIZE_MAXMESSAGECOUNT: "10"
+  ORDERER_GENERAL_MAXWINDOWSIZE: "1000"
+  ORDERER_GENERAL_ORDERERTYPE: "kafka"
+  ORDERER_GENERAL_LOGLEVEL: "INFO"
+  ORDERER_GENERAL_GENESISMETHOD: "file"
+  ORDERER_GENERAL_GENESISFILE: "/var/hyperledger/orderer/orderer.genesis.block"
+  ORDERER_GENERAL_LOCALMSPID: "OrdererMSP"
+  ORDERER_GENERAL_LOCALMSPDIR: "/var/hyperledger/orderer/msp"
+  ORDERER_GENERAL_TLS_ENABLED: "true"
+  ORDERER_GENERAL_TLS_PRIVATEKEY: "/var/hyperledger/orderer/tls/server.key"
+  ORDERER_GENERAL_TLS_CERTIFICATE: "/var/hyperledger/orderer/tls/server.crt"
+  ORDERER_GENERAL_TLS_ROOTCAS: "/var/hyperledger/orderer/tls/ca.crt"
+  GODEBUG: "netdns=go" 
+  ORDERER_KAFKA_RETRY_SHORTINTERVAL: "5s"
+  ORDERER_KAFKA_RETRY_SHORTTOTAL: "60s"
+  ORDERER_KAFKA_VERBOSE: "true"    

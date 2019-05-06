@@ -1,0 +1,50 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: peer0-pnb-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+  labels:
+    run: peer0-pnb-bankconsortiumbcnet-com
+spec:
+  type: NodePort
+  selector:
+    name: peer0-pnb-bankconsortiumbcnet
+  ports:
+  - protocol: TCP
+    nodePort: 30023
+    targetPort: 30023
+    port: 30023
+    name: grpc
+  - protocol: TCP
+    nodePort: 30024
+    targetPort: 30024
+    port: 30024
+    name: events
+    
+    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: peer1-pnb-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+  labels:
+    run: peer1-pnb-bankconsortiumbcnet-com
+spec:
+  type: NodePort
+  selector:
+    name: peer1-pnb-bankconsortiumbcnet
+  ports:
+  - protocol: TCP
+    nodePort: 30025
+    targetPort: 30025
+    port: 30025
+    name: grpc
+  - protocol: TCP
+    nodePort: 30026
+    targetPort: 30026
+    port: 30026
+    name: events
+    
+    

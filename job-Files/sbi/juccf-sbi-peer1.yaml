@@ -1,0 +1,28 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: juccf-sbi-peer1         
+  namespace: bankconsortiumbcnet
+spec:
+  backoffLimit: 5
+  template:
+    metadata:
+      name: juccf-sbi-peer1
+    spec:
+      restartPolicy: "Never"
+      volumes:
+      - name: bankconsortiumbcnetvolume
+        persistentVolumeClaim:
+          claimName: bankconsortiumbcnet-pvc
+      - name: dockersocket
+        hostPath:
+          path: /var/run/docker.sock
+      containers:
+      - name: juccf-sbi-peer1
+        image: alpine:3.7
+        imagePullPolicy: Always
+        command: ["sh", "-c", "rm -f /bankconsortiumbcnet/artifact-Files/crypto-config.yaml ; while [ ! -f /bankconsortiumbcnet/artifact-Files/crypto-config.yaml ]; do echo Waiting for crypto-config.yaml to be updated; sleep 1; done; ls -l /bankconsortiumbcnet/artifact-Files/crypto-config.yaml; "]
+        volumeMounts:
+        - mountPath: /bankconsortiumbcnet
+          name: bankconsortiumbcnetvolume 

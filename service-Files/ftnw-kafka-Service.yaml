@@ -1,0 +1,96 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka0-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+  labels:
+    run: kafka0-bankconsortiumbcnet-com
+spec:
+  type: NodePort
+  selector:
+    name: kafka0-bankconsortiumbcnet
+  ports:
+  - protocol: TCP
+    nodePort: 30300
+    targetPort: 30300
+    port: 30300
+    name: kafka-port
+  - protocol: TCP
+    nodePort: 30301
+    targetPort: 30301
+    port: 30301
+    name: kafka-port2     
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka1-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+  labels:
+    run: kafka1-bankconsortiumbcnet-com
+spec:
+  type: NodePort
+  selector:
+    name: kafka1-bankconsortiumbcnet
+  ports:
+  - protocol: TCP
+    nodePort: 30302
+    targetPort: 30302
+    port: 30302
+    name: kafka-port
+  - protocol: TCP
+    nodePort: 30303
+    targetPort: 30303
+    port: 30303
+    name: kafka-port2     
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka2-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+  labels:
+    run: kafka2-bankconsortiumbcnet-com
+spec:
+  type: NodePort
+  selector:
+    name: kafka2-bankconsortiumbcnet
+  ports:
+  - protocol: TCP
+    nodePort: 30304
+    targetPort: 30304
+    port: 30304
+    name: kafka-port
+  - protocol: TCP
+    nodePort: 30305
+    targetPort: 30305
+    port: 30305
+    name: kafka-port2     
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka3-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+  labels:
+    run: kafka3-bankconsortiumbcnet-com
+spec:
+  type: NodePort
+  selector:
+    name: kafka3-bankconsortiumbcnet
+  ports:
+  - protocol: TCP
+    nodePort: 30306
+    targetPort: 30306
+    port: 30306
+    name: kafka-port
+  - protocol: TCP
+    nodePort: 30307
+    targetPort: 30307
+    port: 30307
+    name: kafka-port2     
+

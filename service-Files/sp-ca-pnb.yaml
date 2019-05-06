@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ca-pnb-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+  labels:
+    run: ca-pnb-bankconsortiumbcnet-com
+spec:
+  type: NodePort
+  selector:
+    name: ca-pnb-bankconsortiumbcnet
+  ports:
+  - protocol: TCP
+    nodePort: 30104
+    targetPort: 30104
+    port: 30104
+    name: grpc
+    
+    

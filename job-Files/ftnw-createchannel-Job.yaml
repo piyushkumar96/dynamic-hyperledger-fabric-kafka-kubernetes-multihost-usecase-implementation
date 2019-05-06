@@ -1,0 +1,228 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: createchannel-chsbihdfc
+  namespace: bankconsortiumbcnet
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      name: createchannel-chsbihdfc
+    spec:
+      restartPolicy: "Never"
+      volumes:
+      - name: bankconsortiumbcnetvolume
+        persistentVolumeClaim:
+          claimName: bankconsortiumbcnet-pvc
+      containers:
+      - name: createchanneltx-chsbihdfc
+        image: piyushkumar96/fabric-tools
+        imagePullPolicy: Always
+        command: ["sh", "-c", "cd /bankconsortiumbcnet && pwd && ls && export FABRIC_CFG_PATH=$PWD && configtxgen -profile chsbihdfcChannel -outputCreateChannelTx ./channel-artifacts/${CHANNEL_NAME}.tx -channelID ${CHANNEL_NAME} && touch /bankconsortiumbcnet/status-files/status_chsbihdfctx_complete "]
+        env:
+        - name: CHANNEL_NAME
+          value: "chsbihdfc"
+        - name: GODEBUG
+          value: "netdns=go"
+        - name: FABRIC_CFG_PATH
+          value: "/etc/hyperledger/fabric"
+        volumeMounts:
+        - mountPath: /bankconsortiumbcnet
+          name: bankconsortiumbcnetvolume
+
+      - name: createchannel-chsbihdfc
+        image: hyperledger/fabric-peer:latest
+        imagePullPolicy: Always
+        command: ["sh", "-c", "cd /opt/gopath/src/github.com/hyperledger/fabric/peer/ && while [ ! -f ./status-files/status_chsbihdfctx_complete ]; do echo Waiting for chsbihdfctx; sleep 2; done; peer channel create -o ${ORDERER_URL} -c ${CHANNEL_NAME} -f ./channel-artifacts/${CHANNEL_NAME}.tx --outputBlock ./channel-artifacts/${CHANNEL_NAME}.block --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/bankconsortiumbcnet-com/orderers/orderer0-bankconsortiumbcnet-com/msp/tlscacerts/tlsca-bankconsortiumbcnet-com-cert.pem && rm ./status-files/status_chsbihdfctx_complete && touch ./status-files/status_channelcreatechsbihdfc_complete"]
+        env:
+        - name: CHANNEL_NAME
+          value: "chsbihdfc"
+        - name: ORDERER_URL
+          value: "orderer0-bankconsortiumbcnet-com:30000"
+        - name: CORE_PEER_ADDRESSAUTODETECT
+          value: "false"
+        - name: CORE_PEER_NETWORKID
+          value: "bankconsortiumbcnet"
+        - name: CORE_PEER_LOCALMSPID
+          value: "sbiMSP"
+        - name: CORE_PEER_MSPCONFIGPATH
+          value: "/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/sbi-bankconsortiumbcnet-com/users/Admin@sbi-bankconsortiumbcnet-com/msp"
+        - name: CORE_LOGGING_LEVEL
+          value: "debug"
+        - name: FABRIC_CFG_PATH
+          value: "/etc/hyperledger/fabric"
+        - name: CORE_PEER_TLS_ENABLED
+          value: "true"
+        - name: CORE_PEER_TLS_CERT_FILE
+          value: "/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/sbi-bankconsortiumbcnet-com/peers/peer0-sbi-bankconsortiumbcnet-com/tls/server.crt"
+        - name: CORE_PEER_TLS_KEY_FILE
+          value: "/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/sbi-bankconsortiumbcnet-com/peers/peer0-sbi-bankconsortiumbcnet-com/tls/server.key"
+        - name: CORE_PEER_TLS_ROOTCERT_FILE
+          value: "/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/sbi-bankconsortiumbcnet-com/peers/peer0-sbi-bankconsortiumbcnet-com/tls/ca.crt"
+        - name: GODEBUG
+          value: "netdns=go"
+        volumeMounts:
+        - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+          name: bankconsortiumbcnetvolume
+          subPath: crypto-config/
+        - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts/
+          name: bankconsortiumbcnetvolume
+          subPath: channel-artifacts/
+        - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/status-files/
+          name: bankconsortiumbcnetvolume
+          subPath: status-files/                   
+
+           
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: createchannel-chhdfcicici
+  namespace: bankconsortiumbcnet
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      name: createchannel-chhdfcicici
+    spec:
+      restartPolicy: "Never"
+      volumes:
+      - name: bankconsortiumbcnetvolume
+        persistentVolumeClaim:
+          claimName: bankconsortiumbcnet-pvc
+      containers:
+      - name: createchanneltx-chhdfcicici
+        image: piyushkumar96/fabric-tools
+        imagePullPolicy: Always
+        command: ["sh", "-c", "cd /bankconsortiumbcnet && pwd && ls && export FABRIC_CFG_PATH=$PWD && configtxgen -profile chhdfciciciChannel -outputCreateChannelTx ./channel-artifacts/${CHANNEL_NAME}.tx -channelID ${CHANNEL_NAME} && touch /bankconsortiumbcnet/status-files/status_chhdfcicicitx_complete "]
+        env:
+        - name: CHANNEL_NAME
+          value: "chhdfcicici"
+        - name: GODEBUG
+          value: "netdns=go"
+        - name: FABRIC_CFG_PATH
+          value: "/etc/hyperledger/fabric"
+        volumeMounts:
+        - mountPath: /bankconsortiumbcnet
+          name: bankconsortiumbcnetvolume
+
+      - name: createchannel-chhdfcicici
+        image: hyperledger/fabric-peer:latest
+        imagePullPolicy: Always
+        command: ["sh", "-c", "cd /opt/gopath/src/github.com/hyperledger/fabric/peer/ && while [ ! -f ./status-files/status_chhdfcicicitx_complete ]; do echo Waiting for chhdfcicicitx; sleep 2; done; peer channel create -o ${ORDERER_URL} -c ${CHANNEL_NAME} -f ./channel-artifacts/${CHANNEL_NAME}.tx --outputBlock ./channel-artifacts/${CHANNEL_NAME}.block --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/bankconsortiumbcnet-com/orderers/orderer1-bankconsortiumbcnet-com/msp/tlscacerts/tlsca-bankconsortiumbcnet-com-cert.pem && rm ./status-files/status_chhdfcicicitx_complete && touch ./status-files/status_channelcreatechhdfcicici_complete"]
+        env:
+        - name: CHANNEL_NAME
+          value: "chhdfcicici"
+        - name: ORDERER_URL
+          value: "orderer1-bankconsortiumbcnet-com:30001"
+        - name: CORE_PEER_ADDRESSAUTODETECT
+          value: "false"
+        - name: CORE_PEER_NETWORKID
+          value: "bankconsortiumbcnet"
+        - name: CORE_PEER_LOCALMSPID
+          value: "hdfcMSP"
+        - name: CORE_PEER_MSPCONFIGPATH
+          value: "/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/hdfc-bankconsortiumbcnet-com/users/Admin@hdfc-bankconsortiumbcnet-com/msp"
+        - name: CORE_LOGGING_LEVEL
+          value: "debug"
+        - name: FABRIC_CFG_PATH
+          value: "/etc/hyperledger/fabric"
+        - name: CORE_PEER_TLS_ENABLED
+          value: "true"
+        - name: CORE_PEER_TLS_CERT_FILE
+          value: "/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/hdfc-bankconsortiumbcnet-com/peers/peer0-hdfc-bankconsortiumbcnet-com/tls/server.crt"
+        - name: CORE_PEER_TLS_KEY_FILE
+          value: "/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/hdfc-bankconsortiumbcnet-com/peers/peer0-hdfc-bankconsortiumbcnet-com/tls/server.key"
+        - name: CORE_PEER_TLS_ROOTCERT_FILE
+          value: "/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/hdfc-bankconsortiumbcnet-com/peers/peer0-hdfc-bankconsortiumbcnet-com/tls/ca.crt"
+        - name: GODEBUG
+          value: "netdns=go"
+        volumeMounts:
+        - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+          name: bankconsortiumbcnetvolume
+          subPath: crypto-config/
+        - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts/
+          name: bankconsortiumbcnetvolume
+          subPath: channel-artifacts/
+        - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/status-files/
+          name: bankconsortiumbcnetvolume
+          subPath: status-files/                   
+
+           
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: createchannel-chicicisbi
+  namespace: bankconsortiumbcnet
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      name: createchannel-chicicisbi
+    spec:
+      restartPolicy: "Never"
+      volumes:
+      - name: bankconsortiumbcnetvolume
+        persistentVolumeClaim:
+          claimName: bankconsortiumbcnet-pvc
+      containers:
+      - name: createchanneltx-chicicisbi
+        image: piyushkumar96/fabric-tools
+        imagePullPolicy: Always
+        command: ["sh", "-c", "cd /bankconsortiumbcnet && pwd && ls && export FABRIC_CFG_PATH=$PWD && configtxgen -profile chicicisbiChannel -outputCreateChannelTx ./channel-artifacts/${CHANNEL_NAME}.tx -channelID ${CHANNEL_NAME} && touch /bankconsortiumbcnet/status-files/status_chicicisbitx_complete "]
+        env:
+        - name: CHANNEL_NAME
+          value: "chicicisbi"
+        - name: GODEBUG
+          value: "netdns=go"
+        - name: FABRIC_CFG_PATH
+          value: "/etc/hyperledger/fabric"
+        volumeMounts:
+        - mountPath: /bankconsortiumbcnet
+          name: bankconsortiumbcnetvolume
+
+      - name: createchannel-chicicisbi
+        image: hyperledger/fabric-peer:latest
+        imagePullPolicy: Always
+        command: ["sh", "-c", "cd /opt/gopath/src/github.com/hyperledger/fabric/peer/ && while [ ! -f ./status-files/status_chicicisbitx_complete ]; do echo Waiting for chicicisbitx; sleep 2; done; peer channel create -o ${ORDERER_URL} -c ${CHANNEL_NAME} -f ./channel-artifacts/${CHANNEL_NAME}.tx --outputBlock ./channel-artifacts/${CHANNEL_NAME}.block --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/bankconsortiumbcnet-com/orderers/orderer0-bankconsortiumbcnet-com/msp/tlscacerts/tlsca-bankconsortiumbcnet-com-cert.pem && rm ./status-files/status_chicicisbitx_complete && touch ./status-files/status_channelcreatechicicisbi_complete"]
+        env:
+        - name: CHANNEL_NAME
+          value: "chicicisbi"
+        - name: ORDERER_URL
+          value: "orderer0-bankconsortiumbcnet-com:30000"
+        - name: CORE_PEER_ADDRESSAUTODETECT
+          value: "false"
+        - name: CORE_PEER_NETWORKID
+          value: "bankconsortiumbcnet"
+        - name: CORE_PEER_LOCALMSPID
+          value: "iciciMSP"
+        - name: CORE_PEER_MSPCONFIGPATH
+          value: "/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/icici-bankconsortiumbcnet-com/users/Admin@icici-bankconsortiumbcnet-com/msp"
+        - name: CORE_LOGGING_LEVEL
+          value: "debug"
+        - name: FABRIC_CFG_PATH
+          value: "/etc/hyperledger/fabric"
+        - name: CORE_PEER_TLS_ENABLED
+          value: "true"
+        - name: CORE_PEER_TLS_CERT_FILE
+          value: "/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/icici-bankconsortiumbcnet-com/peers/peer0-icici-bankconsortiumbcnet-com/tls/server.crt"
+        - name: CORE_PEER_TLS_KEY_FILE
+          value: "/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/icici-bankconsortiumbcnet-com/peers/peer0-icici-bankconsortiumbcnet-com/tls/server.key"
+        - name: CORE_PEER_TLS_ROOTCERT_FILE
+          value: "/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/icici-bankconsortiumbcnet-com/peers/peer0-icici-bankconsortiumbcnet-com/tls/ca.crt"
+        - name: GODEBUG
+          value: "netdns=go"
+        volumeMounts:
+        - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+          name: bankconsortiumbcnetvolume
+          subPath: crypto-config/
+        - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts/
+          name: bankconsortiumbcnetvolume
+          subPath: channel-artifacts/
+        - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/status-files/
+          name: bankconsortiumbcnetvolume
+          subPath: status-files/                   
+
+           

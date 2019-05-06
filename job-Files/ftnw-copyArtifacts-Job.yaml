@@ -1,0 +1,30 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ftnw-copyartifacts
+  namespace: bankconsortiumbcnet
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      name: ftnw-copyartifacts
+    spec:
+      restartPolicy: "Never"
+      volumes:
+      - name: bankconsortiumbcnetvolume
+        persistentVolumeClaim:
+          claimName: bankconsortiumbcnet-pvc
+      - name: dockersocket
+        hostPath:
+          path: /var/run/docker.sock
+      containers:
+      - name: ftnw-copyartifacts
+        image: alpine:3.7
+        imagePullPolicy: Always
+        command: ["sh", "-c", "ls -l /bankconsortiumbcnet; rm -rf /bankconsortiumbcnet/*; ls -l /bankconsortiumbcnet; while [ ! -d /bankconsortiumbcnet/artifact-Files ]; do echo Waiting for artifacts to be copied; sleep 1; done; ls -l /bankconsortiumbcnet/artifact-Files; "]
+        volumeMounts:
+        - mountPath: /bankconsortiumbcnet
+          name: bankconsortiumbcnetvolume
+          
+          

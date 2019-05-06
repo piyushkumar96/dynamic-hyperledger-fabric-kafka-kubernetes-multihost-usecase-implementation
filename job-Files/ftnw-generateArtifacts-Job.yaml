@@ -1,0 +1,37 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ftnw-artifacts-generate
+  namespace: bankconsortiumbcnet
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      name: ftnw-artifacts-generate
+    spec:
+      restartPolicy: "Never"
+      volumes:
+      - name: bankconsortiumbcnetvolume
+        persistentVolumeClaim:
+          claimName: bankconsortiumbcnet-pvc
+      - name: dockersocket
+        hostPath:
+          path: /var/run/docker.sock
+      containers:
+      - name: cryptogen
+        image: piyushkumar96/fabric-tools
+        imagePullPolicy: Always
+        command: ["sh", "-c", "echo 'Cryptogen Starts'; ls -l /bankconsortiumbcnet/artifact-Files; while [ ! -d /bankconsortiumbcnet/artifact-Files ]; do echo Waiting for configFiles; sleep 1; done; cryptogen generate --config /bankconsortiumbcnet/artifact-Files/crypto-config.yaml && cp -r crypto-config /bankconsortiumbcnet/  && find /bankconsortiumbcnet/ -type d | xargs chmod a+rx && find /bankconsortiumbcnet/ -type f | xargs chmod a+r  && touch /bankconsortiumbcnet/status-files/status_cryptogen_complete;"]
+        volumeMounts:
+        - mountPath: /bankconsortiumbcnet
+          name: bankconsortiumbcnetvolume
+      - name: configtxgen
+        image: piyushkumar96/fabric-tools 
+        imagePullPolicy: Always
+        command: ["sh", "-c", "echo 'Configtxgen Starts'; ls -l /bankconsortiumbcnet; sleep 1 && while [ ! -f /bankconsortiumbcnet/status-files/status_cryptogen_complete ]; do echo Waiting for cryptogen; sleep 1; done; cp /bankconsortiumbcnet/artifact-Files/configtx.yaml /bankconsortiumbcnet/; cd /bankconsortiumbcnet/; mkdir channel-artifacts ; export FABRIC_CFG_PATH=$PWD; configtxgen -profile OrgsOrdererGenesis -outputBlock ./channel-artifacts/genesis.block && find /bankconsortiumbcnet/ -type d | xargs chmod a+rx && find /bankconsortiumbcnet/ -type f | xargs chmod a+r && touch /bankconsortiumbcnet/status-files/status_configtxgen_complete && rm /bankconsortiumbcnet/status-files/status_cryptogen_complete;"]
+        volumeMounts:
+        - mountPath: /bankconsortiumbcnet
+          name: bankconsortiumbcnetvolume
+
+

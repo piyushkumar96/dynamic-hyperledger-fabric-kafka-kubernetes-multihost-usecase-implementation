@@ -1,0 +1,28 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: gc-pnb
+  namespace: bankconsortiumbcnet
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      name: gc-pnb
+    spec:
+      restartPolicy: "Never"
+      volumes:
+      - name: bankconsortiumbcnetvolume
+        persistentVolumeClaim:
+          claimName: bankconsortiumbcnet-pvc
+      - name: dockersocket
+        hostPath:
+          path: /var/run/docker.sock
+      containers:
+      - name: gc-pnb
+        image: piyushkumar96/fabric-tools
+        imagePullPolicy: Always
+        command: ["sh", "-c", "ls -l /bankconsortiumbcnet/artifact-Files/crypto-config.yaml; while [ ! -f /bankconsortiumbcnet/artifact-Files/crypto-config.yaml ]; do echo Waiting for configFiles; sleep 1; done; cd /bankconsortiumbcnet; cryptogen extend --config /bankconsortiumbcnet/artifact-Files/crypto-config.yaml  && find /bankconsortiumbcnet/crypto-config/peerOrganizations/pnb-bankconsortiumbcnet-com/ -type d | xargs chmod a+rx && find /bankconsortiumbcnet/crypto-config/peerOrganizations/pnb-bankconsortiumbcnet-com/ -type f | xargs chmod a+r ; cp /bankconsortiumbcnet/artifact-Files/configtx.yaml . ; export FABRIC_CFG_PATH=/bankconsortiumbcnet/ && configtxgen -printOrg pnbMSP > /bankconsortiumbcnet/channel-artifacts/pnbMSP.json && touch /bankconsortiumbcnet/status-files/status_gc-pnb_complete;"]
+        volumeMounts:
+        - mountPath: /bankconsortiumbcnet
+          name: bankconsortiumbcnetvolume 

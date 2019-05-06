@@ -1,0 +1,82 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: peer1-sbi-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: peer1-sbi-bankconsortiumbcnet
+        app: hyperledger
+        role: peer
+        peer-id: "1"
+        org: sbi
+    spec:
+      volumes:
+      - name: bankconsortiumbcnetvolume
+        persistentVolumeClaim:
+          claimName: bankconsortiumbcnet-pvc
+      - name: dockersocket
+        hostPath:
+          path: /var/run/docker.sock
+
+      containers:
+      - name: couchdb-peer1-sbi-bankconsortiumbcnet
+        image: hyperledger/fabric-couchdb:latest
+        ports:
+         - containerPort: 5984
+
+      - name: peer1-sbi-bankconsortiumbcnet
+        image: hyperledger/fabric-peer:latest
+        command: ["sh", "-c", "sleep 1 && while [ ! -f ./status-files/status_gc-sbi-peer1_complete ]; do echo Waiting for cryptos of peer; sleep 1; done; peer node start"]
+        workingDir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+        envFrom:
+         - configMapRef:
+             name: peerbaseconfigmap
+        env:
+        - name: CORE_LEDGER_STATE_STATEDATABASE
+          value: "CouchDB"
+        - name: CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS
+          value: "localhost:5984" 
+        - name: ORDERER_URL
+          value: "orderer1-bankconsortiumbcnet-com:30001"                    
+        - name: CORE_PEER_ID
+          value: "peer1-sbi-bankconsortiumbcnet-com"
+        - name: CORE_PEER_ADDRESS
+          value: "peer1-sbi-bankconsortiumbcnet-com:30021"
+        - name: CORE_PEER_LISTENADDRESS
+          value: "0.0.0.0:30021"
+        - name: CORE_PEER_EVENTS_ADDRESS
+          value: "0.0.0.0:30022"
+        - name: CORE_PEER_GOSSIP_BOOTSTRAP
+          value: "peer1-sbi-bankconsortiumbcnet-com:30021"
+        - name: CORE_PEER_LOCALMSPID
+          value: "sbiMSP"
+        - name: CORE_PEER_MSPID
+          value: "sbiMSP"          
+        - name: CORE_PEER_MSPCONFIGPATH
+          value: "/etc/hyperledger/fabric/msp"
+        ports:
+         - containerPort: 30021
+           name: grpc          
+         - containerPort: 30022
+           name: events          
+        volumeMounts:
+        - mountPath: /etc/hyperledger/fabric/msp 
+          name: bankconsortiumbcnetvolume
+          subPath: crypto-config/peerOrganizations/sbi-bankconsortiumbcnet-com/peers/peer1-sbi-bankconsortiumbcnet-com/msp
+        - mountPath: /etc/hyperledger/fabric/tls 
+          name: bankconsortiumbcnetvolume
+          subPath: crypto-config/peerOrganizations/sbi-bankconsortiumbcnet-com/peers/peer1-sbi-bankconsortiumbcnet-com/tls
+        - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts 
+          name: bankconsortiumbcnetvolume
+          subPath: channel-artifacts
+        - mountPath: /host/var/run/docker.sock
+          name: dockersocket
+        - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/status-files/
+          name: bankconsortiumbcnetvolume
+          subPath: status-files/                  
+

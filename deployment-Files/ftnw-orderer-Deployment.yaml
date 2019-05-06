@@ -1,0 +1,104 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: orderer0-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: orderer0-bankconsortiumbcnet
+        app: hyperledger
+        role: orderer0
+        org: bankconsortiumbcnet 
+    spec:
+      volumes:
+      - name: bankconsortiumbcnetvolume
+        persistentVolumeClaim:
+          claimName: bankconsortiumbcnet-pvc
+
+      containers:
+      - name: orderer0-bankconsortiumbcnet
+        image: hyperledger/fabric-orderer:latest
+        command: ["sh", "-c", "sleep 2 && while [ ! -f ./status-files/status_configtxgen_complete ]; do echo Waiting for configtxgen; sleep 1; done; orderer"]
+        workingDir: /opt/gopath/src/github.com/hyperledger/fabric/
+        envFrom:
+         - configMapRef:
+             name: ordererconfigmap
+        env:
+        - name: ORDERER_GENERAL_LISTENPORT
+          value: "30000"
+        - name: CONFIGTX_ORDERER_KAFKA_BROKERS
+          value: kafka0-bankconsortiumbcnet-com:30300, kafka1-bankconsortiumbcnet-com:30302, kafka2-bankconsortiumbcnet-com:30304, kafka3-bankconsortiumbcnet-com:30306
+        - name: ORDERER_GENERAL_LISTENADDRESS
+          value: "0.0.0.0"             
+        ports:
+         - containerPort: 30000             
+        volumeMounts:
+        - mountPath: /var/hyperledger/orderer/msp 
+          name: bankconsortiumbcnetvolume
+          subPath: crypto-config/ordererOrganizations/bankconsortiumbcnet-com/orderers/orderer0-bankconsortiumbcnet-com/msp
+        - mountPath: /var/hyperledger/orderer/tls 
+          name: bankconsortiumbcnetvolume
+          subPath: crypto-config/ordererOrganizations/bankconsortiumbcnet-com/orderers/orderer0-bankconsortiumbcnet-com/tls
+        - mountPath: /var/hyperledger/orderer/orderer.genesis.block
+          name: bankconsortiumbcnetvolume
+          subPath: channel-artifacts/genesis.block
+        - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/status-files/
+          name: bankconsortiumbcnetvolume
+          subPath: status-files/  
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: orderer1-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: orderer1-bankconsortiumbcnet
+        app: hyperledger
+        role: orderer1
+        org: bankconsortiumbcnet 
+    spec:
+      volumes:
+      - name: bankconsortiumbcnetvolume
+        persistentVolumeClaim:
+          claimName: bankconsortiumbcnet-pvc
+
+      containers:
+      - name: orderer1-bankconsortiumbcnet
+        image: hyperledger/fabric-orderer:latest
+        command: ["sh", "-c", "sleep 2 && while [ ! -f ./status-files/status_configtxgen_complete ]; do echo Waiting for configtxgen; sleep 1; done; orderer"]
+        workingDir: /opt/gopath/src/github.com/hyperledger/fabric/
+        envFrom:
+         - configMapRef:
+             name: ordererconfigmap
+        env:
+        - name: ORDERER_GENERAL_LISTENPORT
+          value: "30001"
+        - name: CONFIGTX_ORDERER_KAFKA_BROKERS
+          value: kafka0-bankconsortiumbcnet-com:30300, kafka1-bankconsortiumbcnet-com:30302, kafka2-bankconsortiumbcnet-com:30304, kafka3-bankconsortiumbcnet-com:30306
+        - name: ORDERER_GENERAL_LISTENADDRESS
+          value: "0.0.0.0"             
+        ports:
+         - containerPort: 30001             
+        volumeMounts:
+        - mountPath: /var/hyperledger/orderer/msp 
+          name: bankconsortiumbcnetvolume
+          subPath: crypto-config/ordererOrganizations/bankconsortiumbcnet-com/orderers/orderer1-bankconsortiumbcnet-com/msp
+        - mountPath: /var/hyperledger/orderer/tls 
+          name: bankconsortiumbcnetvolume
+          subPath: crypto-config/ordererOrganizations/bankconsortiumbcnet-com/orderers/orderer1-bankconsortiumbcnet-com/tls
+        - mountPath: /var/hyperledger/orderer/orderer.genesis.block
+          name: bankconsortiumbcnetvolume
+          subPath: channel-artifacts/genesis.block
+        - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/status-files/
+          name: bankconsortiumbcnetvolume
+          subPath: status-files/  
+

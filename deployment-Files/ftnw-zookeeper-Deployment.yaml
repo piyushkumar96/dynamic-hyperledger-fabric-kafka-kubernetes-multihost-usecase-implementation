@@ -1,0 +1,105 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: zookeeper0-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: zookeeper0-bankconsortiumbcnet
+        app: hyperledger
+        role: zookeeper0
+        org: bankconsortiumbcnet 
+    spec:
+      containers:
+      - name: zookeeper0-bankconsortiumbcnet
+        image: hyperledger/fabric-zookeeper:latest
+        envFrom:
+         - configMapRef:
+             name: kafkaconfigmap
+        env:
+        - name: ZOO_MY_ID
+          value: "1"
+        - name: ZOO_PORT
+          value: "30400"                                                 
+        ports:
+         - containerPort: 30400
+           name: client
+         - containerPort: 30401
+           name: follower
+         - containerPort: 30402
+           name: leader  
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: zookeeper1-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: zookeeper1-bankconsortiumbcnet
+        app: hyperledger
+        role: zookeeper1
+        org: bankconsortiumbcnet 
+    spec:
+      containers:
+      - name: zookeeper1-bankconsortiumbcnet
+        image: hyperledger/fabric-zookeeper:latest
+        envFrom:
+         - configMapRef:
+             name: kafkaconfigmap
+        env:
+        - name: ZOO_MY_ID
+          value: "2"
+        - name: ZOO_PORT
+          value: "30403"                                                 
+        ports:
+         - containerPort: 30403
+           name: client
+         - containerPort: 30404
+           name: follower
+         - containerPort: 30405
+           name: leader  
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: zookeeper2-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: zookeeper2-bankconsortiumbcnet
+        app: hyperledger
+        role: zookeeper2
+        org: bankconsortiumbcnet 
+    spec:
+      containers:
+      - name: zookeeper2-bankconsortiumbcnet
+        image: hyperledger/fabric-zookeeper:latest
+        envFrom:
+         - configMapRef:
+             name: kafkaconfigmap
+        env:
+        - name: ZOO_MY_ID
+          value: "3"
+        - name: ZOO_PORT
+          value: "30406"                                                 
+        ports:
+         - containerPort: 30406
+           name: client
+         - containerPort: 30407
+           name: follower
+         - containerPort: 30408
+           name: leader  
+

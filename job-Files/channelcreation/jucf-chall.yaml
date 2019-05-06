@@ -1,0 +1,28 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: jucf-chall        
+  namespace: bankconsortiumbcnet
+spec:
+  backoffLimit: 2
+  template:
+    metadata:
+      name: jucf-chall  
+    spec:
+      restartPolicy: "Never"
+      volumes:
+      - name: bankconsortiumbcnetvolume
+        persistentVolumeClaim:
+          claimName: bankconsortiumbcnet-pvc
+      - name: dockersocket
+        hostPath:
+          path: /var/run/docker.sock
+      containers:
+      - name: jucf-chall  
+        image: alpine:3.7
+        imagePullPolicy: Always
+        command: ["sh", "-c", "rm -f /bankconsortiumbcnet/artifact-Files/configtx.yaml ; while [ ! -f /bankconsortiumbcnet/artifact-Files/configtx.yaml ]; do echo Waiting for configtx.yaml to be updated; sleep 1; done; ls -l /bankconsortiumbcnet/artifact-Files/configtx.yaml "]
+        volumeMounts:
+        - mountPath: /bankconsortiumbcnet
+          name: bankconsortiumbcnetvolume 

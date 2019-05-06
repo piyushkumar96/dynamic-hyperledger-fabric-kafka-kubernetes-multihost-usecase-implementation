@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: zookeeperconfigmap
+ namespace: bankconsortiumbcnet
+data:
+      #
+      # server.x=[hostname]:nnnnn[:nnnnn]
+      # The list of servers that make up the ZK ensemble. The list that is used
+      # by the clients must match the list of ZooKeeper servers that each ZK
+      # server has. There are two port numbers `nnnnn`. The first is what
+      # followers use to connect to the leader, while the second is for leader
+      # election.
+      ZOO_SERVERS: server.1=zookeeper0-bankconsortiumbcnet-com:30401:30402 server.2=zookeeper1-bankconsortiumbcnet-com:30404:30405 server.3=zookeeper2-bankconsortiumbcnet-com:30407:30408

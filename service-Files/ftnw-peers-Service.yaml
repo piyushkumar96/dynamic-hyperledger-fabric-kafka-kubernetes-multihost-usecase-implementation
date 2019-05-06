@@ -1,0 +1,125 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: peer0-sbi-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+  labels:
+    run: peer0-sbi-bankconsortiumbcnet-com
+spec:
+  type: NodePort
+  selector:
+    name: peer0-sbi-bankconsortiumbcnet
+  ports:
+  - protocol: TCP
+    nodePort: 30011
+    targetPort: 30011
+    port: 30011
+    name: grpc
+  - protocol: TCP
+    nodePort: 30012
+    targetPort: 30012
+    port: 30012
+    name: events
+    
+    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: peer0-hdfc-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+  labels:
+    run: peer0-hdfc-bankconsortiumbcnet-com
+spec:
+  type: NodePort
+  selector:
+    name: peer0-hdfc-bankconsortiumbcnet
+  ports:
+  - protocol: TCP
+    nodePort: 30013
+    targetPort: 30013
+    port: 30013
+    name: grpc
+  - protocol: TCP
+    nodePort: 30014
+    targetPort: 30014
+    port: 30014
+    name: events
+    
+    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: peer1-hdfc-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+  labels:
+    run: peer1-hdfc-bankconsortiumbcnet-com
+spec:
+  type: NodePort
+  selector:
+    name: peer1-hdfc-bankconsortiumbcnet
+  ports:
+  - protocol: TCP
+    nodePort: 30015
+    targetPort: 30015
+    port: 30015
+    name: grpc
+  - protocol: TCP
+    nodePort: 30016
+    targetPort: 30016
+    port: 30016
+    name: events
+    
+    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: peer0-icici-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+  labels:
+    run: peer0-icici-bankconsortiumbcnet-com
+spec:
+  type: NodePort
+  selector:
+    name: peer0-icici-bankconsortiumbcnet
+  ports:
+  - protocol: TCP
+    nodePort: 30017
+    targetPort: 30017
+    port: 30017
+    name: grpc
+  - protocol: TCP
+    nodePort: 30018
+    targetPort: 30018
+    port: 30018
+    name: events
+    
+    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: peer1-icici-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+  labels:
+    run: peer1-icici-bankconsortiumbcnet-com
+spec:
+  type: NodePort
+  selector:
+    name: peer1-icici-bankconsortiumbcnet
+  ports:
+  - protocol: TCP
+    nodePort: 30019
+    targetPort: 30019
+    port: 30019
+    name: grpc
+  - protocol: TCP
+    nodePort: 30020
+    targetPort: 30020
+    port: 30020
+    name: events
+    
+    

@@ -1,0 +1,28 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: gc-sbi-peer1
+  namespace: bankconsortiumbcnet
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      name: gc-sbi-peer1
+    spec:
+      restartPolicy: "Never"
+      volumes:
+      - name: bankconsortiumbcnetvolume
+        persistentVolumeClaim:
+          claimName: bankconsortiumbcnet-pvc
+      - name: dockersocket
+        hostPath:
+          path: /var/run/docker.sock
+      containers:
+      - name: gc-sbi-peer1
+        image: piyushkumar96/fabric-tools
+        imagePullPolicy: Always
+        command: ["sh", "-c", "ls -l /bankconsortiumbcnet/artifact-Files/crypto-config.yaml; while [ ! -f /bankconsortiumbcnet/artifact-Files/crypto-config.yaml ]; do echo Waiting for configFiles; sleep 1; done; cd /bankconsortiumbcnet; cryptogen extend --config /bankconsortiumbcnet/artifact-Files/crypto-config.yaml  && find /bankconsortiumbcnet/crypto-config/peerOrganizations/sbi-bankconsortiumbcnet-com/peers/ -type d | xargs chmod a+rx && find /bankconsortiumbcnet/crypto-config/peerOrganizations/sbi-bankconsortiumbcnet-com/peers/ -type f | xargs chmod a+r  && touch /bankconsortiumbcnet/status-files/status_gc-sbi-peer1_complete;"]
+        volumeMounts:
+        - mountPath: /bankconsortiumbcnet
+          name: bankconsortiumbcnetvolume 

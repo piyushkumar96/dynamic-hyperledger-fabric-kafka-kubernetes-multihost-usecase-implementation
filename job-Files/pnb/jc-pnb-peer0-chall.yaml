@@ -1,0 +1,65 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: jc-pnb-peer0-chall
+  namespace: bankconsortiumbcnet
+spec:
+  backoffLimit: 10
+  template:
+    metadata:
+      name: jc-pnb-peer0-chall
+    spec:
+      restartPolicy: "Never"
+      volumes:
+      - name: bankconsortiumbcnetvolume
+        persistentVolumeClaim:
+          claimName: bankconsortiumbcnet-pvc
+      containers:
+      - name: jc-pnb-peer0-chall
+        image: hyperledger/fabric-peer:latest
+        imagePullPolicy: Always
+        command: ["/bin/bash", "-c", "cd  /opt/gopath/src/github.com/hyperledger/fabric/peer/status-files/ ; ./jc.sh 0 30000"]
+        env:
+        - name: CHANNEL_NAME
+          value: "chall"
+        - name: ORDERER_URL
+          value: "orderer0-bankconsortiumbcnet-com:30000"
+        - name: CORE_PEER_ADDRESSAUTODETECT
+          value: "false"
+        - name: CORE_PEER_NETWORKID
+          value: "bankconsortiumbcnet"
+        - name: CORE_PEER_ADDRESS
+          value: "peer0-pnb-bankconsortiumbcnet-com:30023"         
+        - name: CORE_PEER_LOCALMSPID
+          value: "pnbMSP"
+        - name: CORE_PEER_MSPID
+          value: "pnbMSP"
+        - name: CORE_PEER_MSPCONFIGPATH
+          value: "/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/pnb-bankconsortiumbcnet-com/users/Admin@pnb-bankconsortiumbcnet-com/msp"
+        - name: CORE_LOGGING_LEVEL
+          value: "debug"
+        - name: FABRIC_CFG_PATH
+          value: "/etc/hyperledger/fabric"
+        - name: CORE_PEER_TLS_ENABLED
+          value: "true"
+        - name: CORE_PEER_TLS_CERT_FILE
+          value: "/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/pnb-bankconsortiumbcnet-com/peers/peer0-pnb-bankconsortiumbcnet-com/tls/server.crt"
+        - name: CORE_PEER_TLS_KEY_FILE
+          value: "/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/pnb-bankconsortiumbcnet-com/peers/peer0-pnb-bankconsortiumbcnet-com/tls/server.key"
+        - name: CORE_PEER_TLS_ROOTCERT_FILE
+          value: "/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/pnb-bankconsortiumbcnet-com/peers/peer0-pnb-bankconsortiumbcnet-com/tls/ca.crt"
+        - name: GODEBUG
+          value: "netdns=go"
+        volumeMounts:
+        - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+          name: bankconsortiumbcnetvolume
+          subPath: crypto-config/
+        - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts/
+          name: bankconsortiumbcnetvolume
+          subPath: channel-artifacts/
+        - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/status-files/
+          name: bankconsortiumbcnetvolume
+          subPath: status-files/  
+
+

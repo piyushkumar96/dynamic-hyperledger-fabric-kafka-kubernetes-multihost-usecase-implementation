@@ -1,0 +1,87 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper0-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+  labels:
+    run: zookeeper0-bankconsortiumbcnet-com
+spec:
+  type: NodePort
+  selector:
+    name: zookeeper0-bankconsortiumbcnet
+  ports:
+  - protocol: TCP
+    nodePort: 30400
+    targetPort: 30400
+    port: 30400
+    name: client
+  - protocol: TCP
+    nodePort: 30401
+    targetPort: 30401
+    port: 30401
+    name: follower
+  - protocol: TCP
+    nodePort: 30402
+    targetPort: 30402
+    port: 30402
+    name: leader 
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper1-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+  labels:
+    run: zookeeper1-bankconsortiumbcnet-com
+spec:
+  type: NodePort
+  selector:
+    name: zookeeper1-bankconsortiumbcnet
+  ports:
+  - protocol: TCP
+    nodePort: 30403
+    targetPort: 30403
+    port: 30403
+    name: client
+  - protocol: TCP
+    nodePort: 30404
+    targetPort: 30404
+    port: 30404
+    name: follower
+  - protocol: TCP
+    nodePort: 30405
+    targetPort: 30405
+    port: 30405
+    name: leader 
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper2-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+  labels:
+    run: zookeeper2-bankconsortiumbcnet-com
+spec:
+  type: NodePort
+  selector:
+    name: zookeeper2-bankconsortiumbcnet
+  ports:
+  - protocol: TCP
+    nodePort: 30406
+    targetPort: 30406
+    port: 30406
+    name: client
+  - protocol: TCP
+    nodePort: 30407
+    targetPort: 30407
+    port: 30407
+    name: follower
+  - protocol: TCP
+    nodePort: 30408
+    targetPort: 30408
+    port: 30408
+    name: leader 
+

@@ -1,0 +1,145 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ca-sbi-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: ca-sbi-bankconsortiumbcnet-com
+        app: hyperledger
+        role: ca
+        org: sbi
+    spec:
+      volumes:
+      - name: bankconsortiumbcnetvolume
+        persistentVolumeClaim:
+          claimName: bankconsortiumbcnet-pvc
+
+      containers:
+      - name: ca-sbi-bankconsortiumbcnet
+        image: hyperledger/fabric-ca:latest
+        command: ["sh", "-c", "export FABRIC_CA_SERVER_TLS_KEYFILE=$(ls /etc/hyperledger/fabric-ca-server-config/*_sk) && while [ ! -f /etc/hyperledger/status-files/status_configtxgen_complete ]; do echo Waiting for configtxgen; sleep 1; done; fabric-ca-server start  --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca-sbi-bankconsortiumbcnet-com-cert.pem --ca.keyfile ${FABRIC_CA_SERVER_TLS_KEYFILE}  -b admin:adminpw -d"]
+        env:
+        - name: FABRIC_CA_SERVER_CA_NAME
+          value: ca-sbi-bankconsortiumbcnet
+        - name: FABRIC_CA_SERVER_TLS_CERTFILE
+          value: /etc/hyperledger/fabric-ca-server-config/ca-sbi-bankconsortiumbcnet-com-cert.pem
+        - name: FABRIC_CA_SERVER_TLS_ENABLED
+          value: "true"          
+        - name: FABRIC_CA_SERVER_DEBUG
+          value: "true"
+        - name: GODEBUG
+          value: "netdns=go"
+        ports:
+         - containerPort: 7054           
+        volumeMounts:
+         - mountPath: /etc/hyperledger/fabric-ca-server-config
+           name: bankconsortiumbcnetvolume
+           subPath: crypto-config/peerOrganizations/sbi-bankconsortiumbcnet-com/ca/
+         - mountPath: /etc/hyperledger/status-files/
+           name: bankconsortiumbcnetvolume
+           subPath: status-files/             
+     
+        
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ca-hdfc-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: ca-hdfc-bankconsortiumbcnet
+        app: hyperledger
+        role: ca
+        org: hdfc
+    spec:
+      volumes:
+      - name: bankconsortiumbcnetvolume
+        persistentVolumeClaim:
+          claimName: bankconsortiumbcnet-pvc
+
+      containers:
+      - name: ca-hdfc-bankconsortiumbcnet
+        image: hyperledger/fabric-ca:latest
+        command: ["sh", "-c", "export FABRIC_CA_SERVER_TLS_KEYFILE=$(ls /etc/hyperledger/fabric-ca-server-config/*_sk) && while [ ! -f /etc/hyperledger/status-files/status_configtxgen_complete ]; do echo Waiting for configtxgen; sleep 1; done; fabric-ca-server start  --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca-hdfc-bankconsortiumbcnet-com-cert.pem --ca.keyfile ${FABRIC_CA_SERVER_TLS_KEYFILE}  -b admin:adminpw -d"]
+        env:
+        - name: FABRIC_CA_SERVER_CA_NAME
+          value: ca-hdfc-bankconsortiumbcnet
+        - name: FABRIC_CA_SERVER_TLS_CERTFILE
+          value: /etc/hyperledger/fabric-ca-server-config/ca-hdfc-bankconsortiumbcnet-com-cert.pem           
+        - name: FABRIC_CA_SERVER_TLS_CERTFILE
+          value: /etc/hyperledger/fabric-ca-server-config/ca-hdfc-bankconsortiumbcnet-com-cert.pem
+        - name: FABRIC_CA_SERVER_TLS_ENABLED
+          value: "true"          
+        - name: FABRIC_CA_SERVER_DEBUG
+          value: "true"
+        - name: GODEBUG
+          value: "netdns=go"
+        ports:
+         - containerPort: 7054
+        volumeMounts:
+         - mountPath: /etc/hyperledger/fabric-ca-server-config
+           name: bankconsortiumbcnetvolume
+           subPath: crypto-config/peerOrganizations/hdfc-bankconsortiumbcnet-com/ca/
+         - mountPath: /etc/hyperledger/status-files/
+           name: bankconsortiumbcnetvolume
+           subPath: status-files/             
+     
+        
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ca-icici-bankconsortiumbcnet-com
+  namespace: bankconsortiumbcnet
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: ca-icici-bankconsortiumbcnet
+        app: hyperledger
+        role: ca
+        org: icici
+    spec:
+      volumes:
+      - name: bankconsortiumbcnetvolume
+        persistentVolumeClaim:
+          claimName: bankconsortiumbcnet-pvc
+
+      containers:
+      - name: ca-icici-bankconsortiumbcnet
+        image: hyperledger/fabric-ca:latest
+        command: ["sh", "-c", "export FABRIC_CA_SERVER_TLS_KEYFILE=$(ls /etc/hyperledger/fabric-ca-server-config/*_sk) && while [ ! -f /etc/hyperledger/status-files/status_configtxgen_complete ]; do echo Waiting for configtxgen; sleep 1; done; fabric-ca-server start  --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca-icici-bankconsortiumbcnet-com-cert.pem --ca.keyfile ${FABRIC_CA_SERVER_TLS_KEYFILE}  -b admin:adminpw -d"]
+        env:
+        - name: FABRIC_CA_SERVER_CA_NAME
+          value: ca-icici-bankconsortiumbcnet
+        - name: FABRIC_CA_SERVER_TLS_CERTFILE
+          value: /etc/hyperledger/fabric-ca-server-config/ca-icici-bankconsortiumbcnet-com-cert.pem           
+        - name: FABRIC_CA_SERVER_TLS_CERTFILE
+          value: /etc/hyperledger/fabric-ca-server-config/ca-icici-bankconsortiumbcnet-com-cert.pem
+        - name: FABRIC_CA_SERVER_TLS_ENABLED
+          value: "true"          
+        - name: FABRIC_CA_SERVER_DEBUG
+          value: "true"
+        - name: GODEBUG
+          value: "netdns=go"
+        ports:
+         - containerPort: 7054
+        volumeMounts:
+         - mountPath: /etc/hyperledger/fabric-ca-server-config
+           name: bankconsortiumbcnetvolume
+           subPath: crypto-config/peerOrganizations/icici-bankconsortiumbcnet-com/ca/
+         - mountPath: /etc/hyperledger/status-files/
+           name: bankconsortiumbcnetvolume
+           subPath: status-files/             
+     
+        
