@@ -363,23 +363,23 @@ arg9:- orderer number (0,1,2 ....) (according to this NOOFORDERERS CONSTANT if i
 
 ### Commands on Master Node
 
-administrator@kube-master:~/Documents/DBOK/dynamic-hyperledger-fabric-kafka-kubernetes$ sudo su
+**administrator@kube-master:~/Documents/DBOK/dynamic-hyperledger-fabric-kafka-kubernetes$ sudo su**
 
-administrator@kube-master:~/Documents/DBOK/dynamic-hyperledger-fabric-kafka-kubernetes# kubeadm init --apiserver-advertise-address=172.16.10.161 --pod-network-cidr=10.0.0.0/24
+**administrator@kube-master:~/Documents/DBOK/dynamic-hyperledger-fabric-kafka-kubernetes# kubeadm init --apiserver-advertise-address=172.16.10.161 --pod-network-cidr=10.0.0.0/24**
 
-administrator@kube-master:~/Documents/DBOK/dynamic-hyperledger-fabric-kafka-kubernetes# exit
+**administrator@kube-master:~/Documents/DBOK/dynamic-hyperledger-fabric-kafka-kubernetes# exit**
 
-administrator@kube-master:~/Documents/DBOK/dynamic-hyperledger-fabric-kafka-kubernetes$ mkdir -p $HOME/.kube
+**administrator@kube-master:~/Documents/DBOK/dynamic-hyperledger-fabric-kafka-kubernetes$ mkdir -p $HOME/.kube**
 
-administrator@kube-master:~/Documents/DBOK/dynamic-hyperledger-fabric-kafka-kubernetes$ sudo cp -ivf /etc/kubernetes/admin.conf $HOME/.kube/config
+**administrator@kube-master:~/Documents/DBOK/dynamic-hyperledger-fabric-kafka-kubernetes$ sudo cp -ivf /etc/kubernetes/admin.conf $HOME/.kube/config**
 
-administrator@kube-master:~/Documents/DBOK/dynamic-hyperledger-fabric-kafka-kubernetes$ sudo chown $(id -u):$(id -g) $HOME/.kube/config 
+**administrator@kube-master:~/Documents/DBOK/dynamic-hyperledger-fabric-kafka-kubernetes$ sudo chown $(id -u):$(id -g) $HOME/.kube/config**
 
-administrator@kube-master:~/Documents/DBOK/dynamic-hyperledger-fabric-kafka-kubernetes$ export kubever=$(kubectl version | base64 | tr -d '\n')
+**administrator@kube-master:~/Documents/DBOK/dynamic-hyperledger-fabric-kafka-kubernetes$ export kubever=$(kubectl version | base64 | tr -d '\n')**
 
-administrator@kube-master:~/Documents/DBOK/dynamic-hyperledger-fabric-kafka-kubernetes$ kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
+**administrator@kube-master:~/Documents/DBOK/dynamic-hyperledger-fabric-kafka-kubernetes$ kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"**
 
-administrator@kube-master:~/Documents/DBOK/dynamic-hyperledger-fabric-kafka-kubernetes$ kubectl get pods -o wide --all-namespaces
+**administrator@kube-master:~/Documents/DBOK/dynamic-hyperledger-fabric-kafka-kubernetes$ kubectl get pods -o wide --all-namespaces**
 
 -----------------------------------------------------------------------------------------------------------------------------
 
