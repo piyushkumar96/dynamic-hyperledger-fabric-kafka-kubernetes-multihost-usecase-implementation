@@ -704,6 +704,7 @@ kube-system           weave-net-tw7pn                                        2/2
 kube-system           weave-net-v756w                                        2/2     Running     0          54m   172.16.10.161   kube-master   <none>
 
 
+![alt text](https://github.com/piyushkumar96/dynamic-hyperledger-fabric-kafka-kubernetes-multihost-usecase-implementation/Screenshotofallpodsrunning.png)
 -----------------------------------------------------------------------------------------------------------------------------
                                                               END
 -----------------------------------------------------------------------------------------------------------------------------
